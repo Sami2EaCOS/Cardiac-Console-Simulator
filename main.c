@@ -19,11 +19,11 @@ int* memoire;
 void chargement_bande() {
 	for (int i=0;i<taille;++i) {
 		if (i == 0) {
-            memoire[i] = 001;
+            		memoire[i] = 001;
 		} else if (i == taille-1) {
-            memoire[i] = 800;
+		    	memoire[i] = 800;
 		} else {
-            memoire[i] = 1000;
+            		memoire[i] = 1000;
 		}
 	}
 }
