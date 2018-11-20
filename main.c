@@ -1,4 +1,7 @@
+// On rajoute la bibliothèque standart à notre programme C
 #include <stdio.h>
+
+// Définition de la taille de la mémoire du processeur Cardiac
 #define taille 100
 
 int acc = 0;
@@ -14,7 +17,7 @@ void chargement_bande() {
 		} else if (i == 99) {
             memoire[i] = 800;
 		} else {
-            memoire[i] = 000;
+            memoire[i] = 1000;
 		}
 	}
 }
@@ -69,50 +72,65 @@ void HRS() {
 	acc = 0;
 }
 
-void lecture() {
+int lecture() {
 	while (1) {
 	    if (co > 99) {
             break;
 	    }
-		int j = memoire[co];
-		if (j>=900) {
-			HRS();
+
+	    int adresse = memoire[co]%100;
+		int clef = memoire[co]/100;
+
+		switch (clef) {
+        case 9:
+            HRS();
+            return 0;
+        case 8:
+            JAZ(adresse);
+            break;
+        case 7:
+            SUB(adresse);
+            ++co;
+            break;
+        case 6:
+            ADD(adresse);
+            ++co;
+            break;
+        case 5:
+            STI(adresse);
+			++co;
 			break;
-		} else if (j>=800) {
-			JAZ(j-800);
-		} else if (j>=700) {
-			SUB(j-700);
+        case 4:
+            STA(adresse);
 			++co;
-		} else if (j>=600) {
-			ADD(j-600);
+			break;
+        case 3:
+            LDI(adresse);
 			++co;
-		} else if (j>=500) {
-			STI(j-500);
+			break;
+        case 2:
+            LDA(adresse);
 			++co;
-		} else if (j>=400) {
-			STA(j-400);
+			break;
+        case 1:
+            OUT(adresse);
 			++co;
-		} else if (j>=300) {
-			LDI(j-300);
+			break;
+        case 0:
+            INP(adresse);
 			++co;
-		} else if (j>=200) {
-			LDA(j-200);
-			++co;
-		} else if (j>=100) {
-			OUT(j-100);
-			++co;
-		} else {
-			INP(j);
-			++co;
+			break;
+        default:
+            return -1;
 		}
 	}
 }
-
 
 int main() {
    	memoire = malloc(sizeof(int)*taille);
 	chargement_bande();
 	lecture();
 	free(memoire);
+	printf("Fin du programme");
 	return 0;
 }
