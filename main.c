@@ -10,7 +10,6 @@ int co = 0;
 int* memoire = NULL;
 
 void chargement_bande() {
-	int information = 0;
 	for (int i=0;i<taille;++i) {
 		if (i == 0) {
             memoire[i] = 001;
