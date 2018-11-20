@@ -1,21 +1,21 @@
-// On rajoute les bibliothèques "standards" à notre programme C
+// On rajoute les bibliothÃ¨ques "standards" Ã  notre programme C
 #include <stdio.h>
 #include <stdlib.h>
 
-// Définition de la taille de la mémoire du processeur Cardiac
+// DÃ©finition de la taille de la mÃ©moire du processeur Cardiac
 #define taille 100
 
-// On définit l'accumulateur et le compteur ordinal comme des variables globales
+// On dÃ©finit l'accumulateur et le compteur ordinal comme des variables globales
 int acc = 0;
 int co = 0;
 
-// On définit le pointeur (tableau) qui définira la mémoire
+// On dÃ©finit le pointeur (tableau) qui dÃ©finira la mÃ©moire
 int* memoire;
 
-// Cette fonction sert à remplir la mémoire du cardiac avec les données de bases
+// Cette fonction sert Ã  remplir la mÃ©moire du cardiac avec les donnÃ©es de bases
 // 001 pour la case 00
 // 800 pour la case 99
-// 1000 pour les cases "vides" (hors définition)
+// 1000 pour les cases "vides" (hors dÃ©finition)
 void chargement_bande() {
 	for (int i=0;i<taille;++i) {
 		if (i == 0) {
@@ -78,7 +78,7 @@ void JAZ(int adresse) {
 		memoire[99] = co + 800;
 		co = adresse;
 	} else {
-        ++co;
+        	++co;
 	}
 }
 
@@ -88,78 +88,79 @@ void HRS() {
 	acc = 0;
 }
 
-// Cette fonction s'occupe de la lecture du programme inscrit dans la mémoire du Cardiac
+// Cette fonction s'occupe de la lecture du programme inscrit dans la mÃ©moire du Cardiac
 int lecture() {
-    // Boucle infinie
+   	// Boucle infinie
 	while (1) {
-        // La boucle se termine si le compteur ordinal dépasse la dernière case de la mémoire
-	    if (co > taille-1) {
-            return -1;
-	    }
+        	// La boucle se termine si le compteur ordinal dÃ©passe la derniÃ¨re case de la mÃ©moire
+	    	if (co > taille-1) {
+            		return -1;
+	    	}
 
-        // Permet de récupérer les infos de la case mémoire actuelle en deux parties:
-        // La clef :    X__ (premier des 3 chiffres)
-        // L'adresse :  _XX (les deux autres chiffres)
-	    int adresse = memoire[co]%100;
+        	// Permet de rÃ©cupÃ©rer les infos de la case mÃ©moire actuelle en deux parties:
+        	// La clef :    X__ (premier des 3 chiffres)
+        	// L'adresse :  _XX (les deux autres chiffres)
+	  	int adresse = memoire[co]%100;
 		int clef = memoire[co]/100;
 
-        // Le switch permet de comparer avec la clef avec les différentes possibilités pour celle-ci
+       		// Le switch permet de comparer avec la clef avec les diffÃ©rentes possibilitÃ©s pour celle-ci
 		switch (clef) {
-        case 9:
-            HRS();
-            return 0;
-        case 8:
-            JAZ(adresse);
-            break;
-        case 7:
-            SUB(adresse);
-            ++co;
-            break;
-        case 6:
-            ADD(adresse);
-            ++co;
-            break;
-        case 5:
-            STI(adresse);
+        	case 9:
+           		HRS();
+			// On interrompt la fonction 
+            		return 0;
+        	case 8:
+            		JAZ(adresse);
+           		break;
+        	case 7:
+            		SUB(adresse);
+            		++co;
+            		break;
+        	case 6:
+           		ADD(adresse);
+           		++co;
+            		break;
+        	case 5:
+            		STI(adresse);
 			++co;
 			break;
-        case 4:
-            STA(adresse);
+        	case 4:
+            		STA(adresse);
 			++co;
 			break;
-        case 3:
-            LDI(adresse);
+        	case 3:
+            		LDI(adresse);
 			++co;
 			break;
-        case 2:
-            LDA(adresse);
+        	case 2:
+            		LDA(adresse);
 			++co;
 			break;
-        case 1:
-            OUT(adresse);
+        	case 1:
+            		OUT(adresse);
 			++co;
 			break;
-        case 0:
-            INP(adresse);
+        	case 0:
+            		INP(adresse);
 			++co;
 			break;
-        // Si la clef n'est aucune des possibilités, on renvoie une valeur négative, pour montrer que ça a merdé
-        default:
-            return -1;
+       		// Si la clef n'est aucune des possibilitÃ©s, on renvoie une valeur nÃ©gative, pour montrer que Ã§a a merdÃ©
+        	default:
+            		return -1;
 		}
 	}
 }
 
 // La fonction principale
 int main() {
-    // On alloue la mémoire pour le tableau servant de "mémoire" au Cardiac
+    	// On alloue la mÃ©moire pour le tableau servant de "mÃ©moire" au Cardiac
    	memoire = malloc(sizeof(int)*taille);
 
    	// On utilise nos fonctions de simulation de Cardiac
 	chargement_bande();
 	lecture();
 
-	// On libère la mémoire que l'on a malloc
+	// On libÃ¨re la mÃ©moire que l'on a malloc
 	free(memoire);
 
 	printf("Fin du programme");
