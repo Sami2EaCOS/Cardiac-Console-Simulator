@@ -1,14 +1,21 @@
-// On rajoute la bibliothèque standart à notre programme C
+// On rajoute les bibliothèques "standards" à notre programme C
 #include <stdio.h>
+#include <stdlib.h>
 
 // Définition de la taille de la mémoire du processeur Cardiac
 #define taille 100
 
+// On définit l'accumulateur et le compteur ordinal comme des variables globales
 int acc = 0;
 int co = 0;
 
-int* memoire = NULL;
+// On définit le pointeur (tableau) qui définira la mémoire
+int* memoire;
 
+// Cette fonction sert à remplir la mémoire du cardiac avec les données de bases
+// 001 pour la case 00
+// 800 pour la case 99
+// 1000 pour les cases "vides" (hors définition)
 void chargement_bande() {
 	for (int i=0;i<taille;++i) {
 		if (i == 0) {
@@ -21,6 +28,7 @@ void chargement_bande() {
 	}
 }
 
+// Fonction pour agir comme le "INPUT" (0) du Cardiac
 void INP(int adresse) {
 	int nbr = 0;
 	printf("INP: ");
@@ -28,35 +36,43 @@ void INP(int adresse) {
 	memoire[adresse] = nbr;
 }
 
+// Fonction pour agir comme le "OUTPUT" (1) du Cardiac
 void OUT(int adresse) {
 	int nbr = memoire[adresse];
 	printf("OUT: %d\n", nbr);
 }
 
+// Fonction pour agir comme le "LOAD TO ACC" (2) du Cardiac
 void LDA(int adresse) {
 	acc = memoire[adresse];
 }
 
+// Fonction pour agir comme le "LOAD INDIRECT" (3) du Cardiac
 void LDI(int adresse) {
 	acc = memoire[memoire[adresse]%100];
 }
 
+// Fonction pour agir comme le "STORE FROM ACC" (4) du Cardiac
 void STA(int adresse) {
-	memoire[adresse] = acc;
+	memoire[adresse] = acc%1000;
 }
 
+// Fonction pour agir comme le "STORE INDIRECT" (5) du Cardiac
 void STI(int adresse) {
-	memoire[memoire[adresse]%100] = acc;
+	memoire[memoire[adresse]%100] = acc%1000;
 }
 
+// Fonction pour agir comme le "ADD" (6) du Cardiac
 void ADD(int adresse) {
-	acc = (acc + memoire[adresse])%1000;
+	acc = (acc + memoire[adresse])%10000;
 }
 
+// Fonction pour agir comme le "SUB" (7) du Cardiac
 void SUB(int adresse) {
-	acc = (acc - memoire[adresse])%1000;
+	acc = max(acc - memoire[adresse], 0);
 }
 
+// Fonction pour agir comme le "JUMP IF ACC IS ZERO" (8) du Cardiac
 void JAZ(int adresse) {
 	if (acc == 0) {
 		memoire[99] = co + 800;
@@ -66,6 +82,7 @@ void JAZ(int adresse) {
 	}
 }
 
+// Fonction pour agir comme le "HALT AND RESET" (9) du Cardiac
 void HRS() {
 	co = 0;
 	acc = 0;
