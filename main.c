@@ -110,7 +110,7 @@ void lecture() {
 
 
 int main() {
-    memoire = malloc(sizeof(int)*taille);
+   	memoire = malloc(sizeof(int)*taille);
 	chargement_bande();
 	lecture();
 	free(memoire);
