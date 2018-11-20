@@ -1,26 +1,26 @@
-// On rajoute les bibliothÃ¨ques "standards" Ã  notre programme C
+// On rajoute les bibliothèques "standards" à notre programme C
 #include <stdio.h>
 #include <stdlib.h>
 
-// DÃ©finition de la taille de la mÃ©moire du processeur Cardiac
+// Définition de la taille de la mémoire du processeur Cardiac
 #define taille 100
 
-// On dÃ©finit l'accumulateur et le compteur ordinal comme des variables globales
+// On définit l'accumulateur et le compteur ordinal comme des variables globales
 int acc = 0;
 int co = 0;
 
-// On dÃ©finit le pointeur (tableau) qui dÃ©finira la mÃ©moire
+// On définit le pointeur (tableau) qui définira la mémoire
 int* memoire;
 
-// Cette fonction sert Ã  remplir la mÃ©moire du cardiac avec les donnÃ©es de bases
+// Cette fonction sert à remplir la mémoire du cardiac avec les données de bases
 // 001 pour la case 00
 // 800 pour la case 99
-// 1000 pour les cases "vides" (hors dÃ©finition)
+// 1000 pour les cases "vides" (hors définition)
 void chargement_bande() {
 	for (int i=0;i<taille;++i) {
 		if (i == 0) {
             memoire[i] = 001;
-		} else if (i == 99) {
+		} else if (i == taille-1) {
             memoire[i] = 800;
 		} else {
             memoire[i] = 1000;
@@ -88,15 +88,22 @@ void HRS() {
 	acc = 0;
 }
 
+// Cette fonction s'occupe de la lecture du programme inscrit dans la mémoire du Cardiac
 int lecture() {
+    // Boucle infinie
 	while (1) {
-	    if (co > 99) {
-            break;
+        // La boucle se termine si le compteur ordinal dépasse la dernière case de la mémoire
+	    if (co > taille-1) {
+            return -1;
 	    }
 
+        // Permet de récupérer les infos de la case mémoire actuelle en deux parties:
+        // La clef :    X__ (premier des 3 chiffres)
+        // L'adresse :  _XX (les deux autres chiffres)
 	    int adresse = memoire[co]%100;
 		int clef = memoire[co]/100;
 
+        // Le switch permet de comparer avec la clef avec les différentes possibilités pour celle-ci
 		switch (clef) {
         case 9:
             HRS();
@@ -136,17 +143,25 @@ int lecture() {
             INP(adresse);
 			++co;
 			break;
+        // Si la clef n'est aucune des possibilités, on renvoie une valeur négative, pour montrer que ça a merdé
         default:
             return -1;
 		}
 	}
 }
 
+// La fonction principale
 int main() {
+    // On alloue la mémoire pour le tableau servant de "mémoire" au Cardiac
    	memoire = malloc(sizeof(int)*taille);
+
+   	// On utilise nos fonctions de simulation de Cardiac
 	chargement_bande();
 	lecture();
+
+	// On libère la mémoire que l'on a malloc
 	free(memoire);
+
 	printf("Fin du programme");
 	return 0;
 }
