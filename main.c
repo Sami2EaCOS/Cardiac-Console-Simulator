@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define MAX(a,b) ((a) > (b) ? a : b)
+
 // Définition de la taille de la mémoire du processeur Cardiac
 #define taille 100
 
@@ -69,7 +71,7 @@ void ADD(int adresse) {
 
 // Fonction pour agir comme le "SUB" (7) du Cardiac
 void SUB(int adresse) {
-	acc = max(acc - memoire[adresse], 0);
+	acc = MAX(acc - memoire[adresse], 0);
 }
 
 // Fonction pour agir comme le "JUMP IF ACC IS ZERO" (8) du Cardiac
