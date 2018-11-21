@@ -165,6 +165,6 @@ int main() {
 	// On libère la mémoire que l'on a malloc
 	free(memoire);
 
-	printf("Fin du programme");
+	printf("Fin du programme\n");
 	return 0;
 }
