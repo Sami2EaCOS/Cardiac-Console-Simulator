@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Définition d'une fonction pour trouver le maximum entre deux valeurs
 #define MAX(a,b) ((a) > (b) ? a : b)
 
 // Définition de la taille de la mémoire du processeur Cardiac
